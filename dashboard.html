@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-left">
+                <i class="fas fa-wallet"></i>
+                <h1>Expense Tracker</h1>
+            </div>
+            <div class="header-right">
+                <span id="userName">Welcome!</span>
+                <button onclick="logout()" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Financial Summary Cards -->
+            <section class="summary-cards">
+                <div class="card income-card">
+                    <div class="card-icon">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Monthly Income</h3>
+                        <p class="amount" id="monthlyIncome">$0.00</p>
+                        <button onclick="showIncomeModal()" class="btn-small">
+                            <i class="fas fa-edit"></i> Set Income
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card expense-card">
+                    <div class="card-icon">
+                        <i class="fas fa-arrow-down"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Total Expenses</h3>
+                        <p class="amount" id="totalExpenses">$0.00</p>
+                        <p class="subtitle" id="expenseCount">0 transactions</p>
+                    </div>
+                </div>
+
+                <div class="card savings-card">
+                    <div class="card-icon">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Savings</h3>
+                        <p class="amount" id="totalSavings">$0.00</p>
+                        <p class="subtitle" id="savingsPercentage">0% saved</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Categories and Expenses -->
+            <section class="main-content">
+                <div class="content-left">
+                    <!-- Categories Section -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2><i class="fas fa-tags"></i> Categories</h2>
+                            <button onclick="showCategoryModal()" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Category
+                            </button>
+                        </div>
+                        <div id="categoriesList" class="categories-grid">
+                            <!-- Categories will be loaded here -->
+                        </div>
+                    </div>
+
+                    <!-- Expense Chart -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2><i class="fas fa-chart-pie"></i> Expense Breakdown</h2>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="expenseChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-right">
+                    <!-- Add Expense -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2><i class="fas fa-plus-circle"></i> Add Expense</h2>
+                        </div>
+                        <form id="addExpenseForm" class="expense-form">
+                            <div class="form-group">
+                                <label for="expenseAmount">Amount</label>
+                                <input type="number" id="expenseAmount" step="0.01" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="expenseNote">Description</label>
+                                <input type="text" id="expenseNote" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="expenseCategory">Category</label>
+                                <select id="expenseCategory" required>
+                                    <option value="">Select Category</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="expenseDate">Date</label>
+                                <input type="date" id="expenseDate" required>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-plus"></i> Add Expense
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Expense Filters -->
+                    <div class="section-card">
+                        <div class="section-header">
+                            <h2><i class="fas fa-filter"></i> Filter Expenses</h2>
+                        </div>
+                        <div class="filter-buttons">
+                            <button onclick="filterExpenses('all')" class="btn-filter active" data-filter="all">
+                                All
+                            </button>
+                            <button onclick="filterExpenses('past_week')" class="btn-filter" data-filter="past_week">
+                                Past Week
+                            </button>
+                            <button onclick="filterExpenses('last_month')" class="btn-filter" data-filter="last_month">
+                                Last Month
+                            </button>
+                            <button onclick="filterExpenses('last_3_months')" class="btn-filter" data-filter="last_3_months">
+                                Last 3 Months
+                            </button>
+                        </div>
+                        <div class="custom-date-filter">
+                            <h4>Custom Date Range</h4>
+                            <div class="date-inputs">
+                                <input type="date" id="startDate" placeholder="Start Date">
+                                <input type="date" id="endDate" placeholder="End Date">
+                                <button onclick="filterByCustomDate()" class="btn-small">
+                                    <i class="fas fa-search"></i> Filter
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Expenses List -->
+            <section class="expenses-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2><i class="fas fa-list"></i> Recent Expenses</h2>
+                        <div class="expense-actions">
+                            <button onclick="refreshExpenses()" class="btn-small">
+                                <i class="fas fa-refresh"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    <div id="expensesList" class="expenses-list">
+                        <!-- Expenses will be loaded here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Income Modal -->
+    <div id="incomeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-dollar-sign"></i> Set Monthly Income</h2>
+                <span class="close" onclick="closeModal('incomeModal')">&times;</span>
+            </div>
+            <form id="incomeForm">
+                <div class="form-group">
+                    <label for="incomeAmount">Monthly Income Amount</label>
+                    <input type="number" id="incomeAmount" step="0.01" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeModal('incomeModal')" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Save Income</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div id="categoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-tag"></i> Add Category</h2>
+                <span class="close" onclick="closeModal('categoryModal')">&times;</span>
+            </div>
+            <form id="categoryForm">
+                <div class="form-group">
+                    <label for="categoryTitle">Category</label>
+                    <select id="categoryTitle" required>
+                        <option value="">Select Category</option>
+                        <option value="Groceries">Groceries</option>
+                        <option value="Leisure">Leisure</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Health">Health</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="categoryDescription">Description</label>
+                    <input type="text" id="categoryDescription" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeModal('categoryModal')" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Expense Modal -->
+    <div id="editExpenseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Edit Expense</h2>
+                <span class="close" onclick="closeModal('editExpenseModal')">&times;</span>
+            </div>
+            <form id="editExpenseForm">
+                <input type="hidden" id="editExpenseId">
+                <div class="form-group">
+                    <label for="editExpenseAmount">Amount</label>
+                    <input type="number" id="editExpenseAmount" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="editExpenseNote">Description</label>
+                    <input type="text" id="editExpenseNote" required>
+                </div>
+                <div class="form-group">
+                    <label for="editExpenseCategory">Category</label>
+                    <select id="editExpenseCategory" required>
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editExpenseDate">Date</label>
+                    <input type="date" id="editExpenseDate" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" onclick="closeModal('editExpenseModal')" class="btn-secondary">Cancel</button>
+                    <button type="submit" class="btn-primary">Update Expense</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -13,7 +13,7 @@ import os
 from bson import ObjectId
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["*"], allow_headers=["Content-Type", "Authorization"], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 # MongoDB Configuration
 app.config['MONGO_URI'] = 'mongodb://localhost:27017/expense_tracker'
