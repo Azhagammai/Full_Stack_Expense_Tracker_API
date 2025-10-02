@@ -1,4 +1,4 @@
-# Expense Tracker API
+# Full_Stack_Expense Tracker API
 
 A comprehensive REST API for managing personal expenses, built with Python Flask and MongoDB. This API provides secure user authentication, expense categorization, and powerful filtering capabilities.
 
@@ -383,6 +383,30 @@ JWT_SECRET_KEY=your-very-secure-secret-key
 FLASK_ENV=production
 ```
 
+# SnapShot
+```signup```
+<img width="1920" height="1080" alt="Screenshot (457)" src="https://github.com/user-attachments/assets/dc30a0a9-cc45-4f99-9105-b98d0f45a712" />
+
+```Login```
+<img width="1920" height="1080" alt="Screenshot (458)" src="https://github.com/user-attachments/assets/ee47002c-1d20-4661-8a45-31725abfd91a" />
+
+```DashBoard```
+<img width="1920" height="1080" alt="Screenshot (460)" src="https://github.com/user-attachments/assets/f3f90e43-a583-4894-8081-7b00405fd7bc" />
+
+```categories```
+<img width="1920" height="1080" alt="Screenshot (460)" src="https://github.com/user-attachments/assets/8674002b-537b-4897-a876-7b15fd15de92" />
+```listed```
+<img width="1920" height="1080" alt="Screenshot (462)" src="https://github.com/user-attachments/assets/efa1f735-9967-4004-9f95-23822b9e820d" />
+
+```Monthly income Added```
+<img width="1920" height="1080" alt="Screenshot (463)" src="https://github.com/user-attachments/assets/e981d8aa-46c6-4e1e-9610-4a7053362a38" />
+
+```Added the Expense ```
+<img width="1920" height="1080" alt="Screenshot (464)" src="https://github.com/user-attachments/assets/92b63081-4ce0-430a-aac7-e170f2c67188" />
+
+```CRUD```
+<img width="1920" height="1080" alt="Screenshot (465)" src="https://github.com/user-attachments/assets/ec8331fa-2d15-4192-8635-1ddb8962fdd5" />
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -390,15 +414,3 @@ FLASK_ENV=production
 3. Make your changes
 4. Add tests if applicable
 5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 📞 Support
-
-For support or questions, please open an issue in the repository or contact the development team.
-
----
-
-**Happy expense tracking! 💰📊**
